@@ -1,0 +1,236 @@
+# For questions: erik.evenson@kyndryl.com, hitendra.verma@kyndryl.com
+# ADOR/GCOM/Kyndryl
+ 
+# To generate diagram, use d2 from https: //d2lang.com/:
+ 
+# d2 -- layout elk <filename>.d2 <filename>.pdf
+ 
+ROOT: ADOR/GCOM STARS Project {
+  ADOR Laptop: ADOR Laptop(s) {
+    shape: image
+    icon: https://icons.terrastruct.com/tech%2Flaptop.svg
+  }
+  TFC: Terraform Cloud {
+    icon: https://www.datocms-assets.com/2885/1620155116-brandhcterraformverticalcolor.svg
+    ADOR-GCOM: ADOR/GCOM Organization {
+      DEV: Development Workspace
+      QA: QA Workspace
+      PROD: Production Workspace
+    }
+    Notes: |md
+      - Not FedRAMP
+      - Does not connect to ADOR data
+    |
+  }
+  ADOR Laptop -- IM.Firewall
+  IM.Firewall -- TFC
+  IM.Firewall -- Azure
+  Azure: {
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/1200px-Microsoft_Azure.svg.png
+    DevOps: {
+      APP-REPOS: Application Repositories {
+        shape: image
+        icon: https://icons.terrastruct.com/azure%2FDevOps%20Service%20Color%2FAzure%20Repos.svg
+      }
+      INF-REPO: Infrastructure Repository {
+        shape: image
+        icon: https://icons.terrastruct.com/azure%2FDevOps%20Service%20Color%2FAzure%20Repos.svg
+      }
+    }
+  }
+  IM: Iron Mountain {
+    icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf_bFSqkJ0adCGk3tiXNLeI8Gstzh-eUHLILVGIvioNw&s
+    Firewall: Palo Alto Firewall {
+      shape: image
+      icon: https://icons.terrastruct.com/infra%2F003-firewall.svg
+    }
+    Active Directory: {
+      shape: image
+      icon: https://icons.terrastruct.com/azure%2FIdentity%20Service%20Color%2FActive%20Directory.svg
+    }
+  }
+  Direct Connect Location: {
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAWS-Direct-Connect.svg
+    Provider Cage: {
+      shape: image
+      icon: https://icons.terrastruct.com/infra%2F012-data.svg
+    }
+  }
+  AWS: {
+    icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FAWS-Cloud-alt_light-bg.svg
+    API Endpoint: {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FMobile%2FAmazon-API-Gateway_Endpoint_light-bg.svg
+    }
+    _.TFC -- API Endpoint
+    GCOM: {
+      MGMT -- SECURITY-OU
+      MGMT -- ADOR-OU
+      MGMT: Management Account {
+        icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Organizations_Account_light-bg.svg
+        Control Tower: {
+          shape: image
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Control-Tower.svg
+        }
+        Organizations: {
+          shape: image
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Organizations.svg
+        }
+        CloudTrail: {
+          shape: image
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-CloudTrail.svg
+        }
+        CloudWatch: {
+          shape: image
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAmazon-CloudWatch.svg
+        }
+        Config: {
+          shape: image
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Config.svg
+        }
+        IAM: {
+          shape: image
+          icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Identity-and-Access-Management-IAM_Add-on_light-bg.svg
+        }
+        Security Hub: {
+          shape: image
+          icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Security-Hub.svg
+        }
+      }
+      SECURITY-OU: {
+        Log-Archive: Log Archive Account {
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Organizations_Account_light-bg.svg
+          S3: {
+            shape: image
+            icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3_Bucket-with-Objects_light-bg.svg
+          }
+        }
+        Audit: Audit {
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Organizations_Account_light-bg.svg
+        }
+      }
+      ADOR-OU: {
+        SHARED: Shared Account {
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Organizations_Account_light-bg.svg
+          US-West-2: {
+            icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FRegion_light-bg.svg
+            TGW: Transit Gateway {
+              shape: image
+              icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAWS-Transit-Gateway.svg
+            }
+            TGW -- _._.QA.US-West-2.VPC: Attach
+            TGW -- _._.DEV.US-West-2.VPC: Attach
+            TGW -- _._.PROD.US-West-2.VPC: Attach
+            TGW -- _._.SHARED.US-West-2.VPC: Attach
+            VPC: {
+              icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC.svg
+              Firewall: Fortigate {
+                shape: image
+                icon: https://icons.terrastruct.com/infra%2F003-firewall.svg
+              }
+              Code Pipeline {
+                shape: image
+                icon: https://icons.terrastruct.com/aws%2FDeveloper%20Tools%2FAWS-CodePipeline.svg
+              }
+            }
+          }
+        }
+        DEV: Development Account {
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Organizations_Account_light-bg.svg
+          US-West-2: {
+            icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FRegion_light-bg.svg
+            VPC: {
+              icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC.svg
+              AZ-A: {
+                SN-Private-1: Private 172.25.134.32/27 {
+                  icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FVPC-subnet-private_light-bg.svg
+                  ML01: Marklogic 01 {
+                    shape: image
+                    icon: https://icons.terrastruct.com/aws%2FCompute%2F_Instance%2FAmazon-EC2_R5a-Instance_light-bg.svg
+                  }
+                  ML03: Marklogic 03 {
+                    shape: image
+                    icon: https://icons.terrastruct.com/aws%2FCompute%2F_Instance%2FAmazon-EC2_R5a-Instance_light-bg.svg
+                  }
+                }
+              }
+              AZ-B: {
+                SN2: Private Private 172.25.134.64/27 {
+                  icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FVPC-subnet-private_light-bg.svg
+                  ML02: Marklogic 02 {
+                    shape: image
+                    icon: https://icons.terrastruct.com/aws%2FCompute%2F_Instance%2FAmazon-EC2_R5a-Instance_light-bg.svg
+                  }
+                }
+              }
+            }
+          }
+        }
+        PROD: Production Account {
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Organizations_Account_light-bg.svg
+          US-West-2: {
+            icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FRegion_light-bg.svg
+            VPC: {
+              shape: image
+              icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC.svg
+              #   AZ-A
+              #   AZ-B
+              #   AZ-C
+            }
+          }
+        }
+        QA: QA/UAT Account {
+          icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Organizations_Account_light-bg.svg
+          US-West-2: {
+            icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FRegion_light-bg.svg
+            VPC: {
+              shape: image
+              icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC.svg
+              #   AZ-A: {
+              #     SN1: Private Subnet
+              #     SN2: Private Subnet
+              #     SN3: Public Subnet
+              #   }
+              #   AZ-B: {
+              #     SN1: Private Subnet
+              #     SN2: Private Subnet
+              #     SN3: Public Subnet
+              #   }
+              #   AZ-C: {
+              #     SN1: Private Subnet
+              #     SN2: Private Subnet
+              #     SN3: Public Subnet
+              #   }
+            }
+          }
+        }
+      }
+    }
+    ADOR: {
+      Direct Connect Gateway: {
+        shape: image
+        icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAWS-Direct-Connect.svg
+      }
+      US-West-2: {
+        icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FRegion_light-bg.svg
+        TGW: Transit Gateway {
+          shape: image
+          icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAWS-Transit-Gateway.svg
+        }
+ 
+        VPC: {
+          icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC.svg
+          Firewall: Palo Alto {
+            shape: image
+            icon: https://icons.terrastruct.com/infra%2F003-firewall.svg
+          }
+        }
+        TGW -- VPC: Attach
+      }
+      Direct Connect Gateway -- US-West-2.TGW
+    }
+ 
+    ADOR.US-West-2.TGW -- GCOM.ADOR-OU.SHARED.US-West-2.TGW: PEERED
+  }
+  IM.Firewall -- Direct Connect Location.Provider Cage -- AWS.ADOR.Direct Connect Gateway
+}
